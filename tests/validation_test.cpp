@@ -19,7 +19,7 @@ TEST(SimpleTest3, basicTest5) {
 }
 
 TEST(SimpleTest, basicTest) {
-  std::istrstream str("(43 + 91) * 2 - 19 + (12 * 9) - (9 * 1)");
+  std::istrstream str("(43 + 91) * 2 - 19 + (12 * 9) - (9 * 1 + 1)");
 
   Parser parser(str, std::cout);
   EXPECT_TRUE(parser.parse());
@@ -40,9 +40,7 @@ TEST(SimpleTest2, basicTest3) {
 }
 
 TEST(SimpleTest2, basicTest4) {
-  std::istrstream str("34 -"
-                      ""
-                      "");
+  std::istrstream str("34 - 12 - 10");
 
   Parser parser(str, std::cout);
     EXPECT_TRUE(parser.parse());

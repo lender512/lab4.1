@@ -93,17 +93,23 @@ class Parser {
     void exp(Node* &root) {
         term(root);
         while (scanner.query_token()._atributo == Categoria::opResta || scanner.query_token()._atributo == Categoria::opSuma) {
-            //auto* last = root->children[root->children.size() - 1];
-            auto* child = new Node(root, true, scanner.query_token()._lexema);
+            std::string op = scanner.query_token()._lexema;
+            auto* last = root->children[root->children.size() - 1];
+            auto* clone = new Node(last, true, last->value);
+            last->terminal = false;
+            last->value = "";
             //(root)->children.insert(root->children.begin(), child);
             scanner.get_token();
-            auto* parent = new Node(nullptr, false, "");
-            //parent->children.insert(parent->children.begin(), root);
-            parent->children.push_back(root);
-            parent->children.push_back(child);
-            (root)->parent = parent;
-            root = parent;
-            term(root);
+            //auto* parent = new Node(nullptr, false, "");
+            clone->children = last->children;
+            last->children.clear();
+            last->children.push_back(clone);
+            auto* child = new Node(root, true, op);
+            last->children.push_back(child);
+            (root)->parent = last;
+            //root = last;
+            //printBT(root);
+            term(last);
         }
     }
 
@@ -124,7 +130,7 @@ class Parser {
             last->children.push_back(child);
             (root)->parent = last;
             //root = last;
-            printBT(root);
+            //printBT(root);
             factor(last);
         }
     }
@@ -160,7 +166,7 @@ public:
     int result = 0;
     int solve(Node* root){
         if (root->children.size() <= 1) {
-            if (root->terminal) {
+            if (root->value != "") {
                 root->value.erase(remove_if(root->value.begin(), root->value.end(), isspace), root->value.end());
                 return stoi(root->value);
             } else
@@ -205,7 +211,7 @@ public:
             error = true;
         }
         if (!error) printBT(root);
-        std::cout << solve(root);
+        std::cout << "Respuesta: " << solve(root);
         return !error;
     }
 
