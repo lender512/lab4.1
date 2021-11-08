@@ -1,3 +1,4 @@
 #pragma once
 
-enum Categoria { A = 255, B, ERROR, END };
+enum Categoria { parIzquierdo = 255, parDerecho, opResta, opSuma, opMull, numero, END, ERROR};
+

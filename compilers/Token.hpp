@@ -23,11 +23,11 @@ class Token {
 std::ostream& operator<<(std::ostream& os, Token token) {
   os << "<";
   switch (token._atributo) {
-    case Categoria::A:
-      os << "a";
+    case Categoria::parIzquierdo:
+      os << "(";
       break;
-    case Categoria::B:
-      os << "b";
+    case Categoria::parDerecho:
+      os << ")";
       break;
     case Categoria::ERROR:
       os << "Error";

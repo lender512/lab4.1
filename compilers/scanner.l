@@ -1,15 +1,26 @@
 %{
 #include "Enums.h"
+
 %}
 
-%option noyywrap c++
-
+%option yylineno noyywrap c++
+DIGITO [0-9]
 %%
-"a" return Categoria::A;
-"b" return Categoria::B;
 
-\n  return Categoria::END;
+
+[" "]+
+[+ -]?{DIGITO}+ return Categoria::numero;
+
+"+" return Categoria::opSuma;
+"-" return Categoria::opResta;
+"*" return Categoria::opMull;
+"(" return Categoria::parIzquierdo;
+")" return Categoria::parDerecho;
+
+
+\n   return Categoria::END;
 \t
-.   return Categoria::ERROR;
+
+. return Categoria::ERROR;
 
 %%

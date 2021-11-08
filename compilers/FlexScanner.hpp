@@ -35,6 +35,10 @@ class FlexScanner : public yyFlexLexer {
 
   private:
     Token last_token;
+  public:
+    Token get_last_token(){
+        return last_token;
+    }
 };
 
 }  // namespace compilers

@@ -6,36 +6,61 @@
 
 using namespace utec::compilers;
 
-class ParamTest : public testing::TestWithParam<std::pair<std::string, std::vector<std::string>>> {
-};
-
 // Grammar:
 // S -> AB
 // A -> aA | a
 // B -> bB | b
 
-TEST_P(ParamTest, basicTest) {
-  std::istrstream str(GetParam().first.c_str());
+TEST(SimpleTest3, basicTest5) {
+    std::istrstream str("(((((((((((((10 + 12");
 
-  Parser parser(str, std::cout);
-  EXPECT_EQ(parser.parse(), GetParam().second);
+    Parser parser(str, std::cout);
+    EXPECT_FALSE(parser.parse());
 }
 
-INSTANTIATE_TEST_SUITE_P(SimpleTest,
-                         ParamTest,
-                         testing::Values(
-                          std::make_pair("aaaaaab", std::vector<std::string>()),
-                          std::make_pair("abbbbbb", std::vector<std::string>()),
-                          std::make_pair("b", std::vector<std::string>{"caracter b unexpected"}),
-                          std::make_pair("a", std::vector<std::string>{"caracter END unexpected"}),
-                          std::make_pair("aaaaaabbbbbb", std::vector<std::string>()),
-                          std::make_pair("ab", std::vector<std::string>()),
-                          std::make_pair("ba", std::vector<std::string>{"caracter b unexpected", "caracter a unexpected"}),
-                          std::make_pair("", std::vector<std::string>{"caracter END unexpected", "caracter END unexpected"}),
-                          std::make_pair("d", std::vector<std::string>{"caracter d unexpected", "caracter d unexpected", "caracter d unexpected"}),
-                          std::make_pair("ac", std::vector<std::string>{"caracter c unexpected", "caracter c unexpected"}),
-                          std::make_pair("aba", std::vector<std::string>{"caracter a unexpected"})
-                         ));
+TEST(SimpleTest, basicTest) {
+  std::istrstream str("(43 + 91) * 2 - 19 + (12 * 9) - (9 * 1)");
+
+  Parser parser(str, std::cout);
+  EXPECT_TRUE(parser.parse());
+}
+
+TEST(SimpleTest2, basicTest2) {
+  std::istrstream str("(((34 + 3) * 42))");
+
+  Parser parser(str, std::cout);
+    EXPECT_TRUE(parser.parse());
+}
+
+TEST(SimpleTest2, basicTest3) {
+    std::istrstream str("(3 + 1) * (4 + 2)");
+
+    Parser parser(str, std::cout);
+    EXPECT_TRUE(parser.parse());
+}
+
+TEST(SimpleTest2, basicTest4) {
+  std::istrstream str("34 -"
+                      ""
+                      "");
+
+  Parser parser(str, std::cout);
+    EXPECT_TRUE(parser.parse());
+}
+
+TEST(SimpleTest3, basicTest3) {
+  std::istrstream str("12 + -32 * -10 - 55");
+
+  Parser parser(str, std::cout);
+  EXPECT_TRUE(parser.parse());
+}
+
+TEST(SimpleTest3, basicTest6) {
+    std::istrstream str("10 / 12 -21");
+
+    Parser parser(str, std::cout);
+    EXPECT_FALSE(parser.parse());
+}
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
